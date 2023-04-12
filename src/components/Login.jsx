@@ -1,33 +1,45 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 class Login extends Component {
-  render() {
-    let state = {
-      email: "",
-      password: "",
-      message: "",
+  state = {
+    email: "",
+    password: "",
+    message: "",
+  };
+
+  // Login Form Submit
+  formSubmit = (e) => {
+    e.preventDefault();
+
+    const data = {
+      email: this.state.email,
+      password: this.state.password,
     };
-
-    // Login Form Submit
-    const formSubmit = (e) => {
-      e.preventDefault();
-
-      const data = {
-        email: this.state.email,
-        password: this.state.password,
-      };
-      console.log(data.email);
-      axios
-        .post("/login", data)
-        .then((response) => {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
+    console.log(data.email);
+    axios
+      .post("/login", data)
+      .then((response) => {
+        console.log("hello");
+        console.log(localStorage.setItem("token", response.data.data.token));
+        this.setState({
+          loggedIn: true,
         });
-    };
+        this.props.setUser(response.data.data.user);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  render() {
+    // After login redirect to profile
+
+    if (this.state.loggedIn) {
+      console.log("In Navigate");
+      return <Navigate replace to={"/profile"} />;
+    }
 
     return (
       <div>
@@ -38,7 +50,7 @@ class Login extends Component {
         <div className="row">
           <div className="jumbotron col-lg-4 offset-lg-4">
             <h3 className="text-center">Login Account</h3>
-            <form onSubmit={formSubmit}>
+            <form onSubmit={this.formSubmit}>
               <div className="form-group">
                 <label htmlFor="exampleInputEmail1">Email address</label>
                 <input
