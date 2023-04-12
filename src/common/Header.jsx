@@ -39,8 +39,18 @@ class Header extends Component {
           <Nav user={this.state.user} setUser={this.setUser} />
           <Routes>
             <Route exact path="/" Component={Home} />
-            <Route path="/login" Component={Login} />
-            <Route path="/register" Component={Register} />
+            <Route
+              path="/login"
+              Component={() => (
+                <Login user={this.state.user} setUser={this.setUser} />
+              )}
+            />
+            <Route
+              path="/register"
+              Component={() => (
+                <Register user={this.state.user} setUser={this.setUser} />
+              )}
+            />
             <Route path="/forget" Component={Forget} />
             <Route
               path="/profile"
