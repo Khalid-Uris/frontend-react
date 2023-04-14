@@ -7,6 +7,7 @@ import Register from "../components/Register";
 import Forget from "../components/Forget";
 import Profile from "../components/Profile";
 import axios from "axios";
+import Reset from "../components/Reset";
 
 class Header extends Component {
   state = {
@@ -52,6 +53,7 @@ class Header extends Component {
               )}
             />
             <Route path="/forget" Component={Forget} />
+            <Route path="/reset/:id" Component={Reset} />
             <Route
               path="/profile"
               element={<Profile user={this.state.user} />}

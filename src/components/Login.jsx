@@ -9,6 +9,8 @@ class Login extends Component {
     message: "",
   };
 
+  //   message = [];
+
   // Login Form Submit
   formSubmit = (e) => {
     e.preventDefault();
@@ -28,8 +30,10 @@ class Login extends Component {
         });
         this.props.setUser(response.data.data.user);
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((error) => {
+        // console.log(error.response.data.data.error);
+
+        this.setState({ message: error.response.data.message });
       });
   };
 
@@ -39,6 +43,17 @@ class Login extends Component {
     if (this.state.loggedIn) {
       console.log("In Navigate");
       return <Navigate replace to={"/profile"} />;
+    }
+
+    let error = "";
+    console.log("In render");
+    console.log(this.state.message);
+    if (this.state.message) {
+      error = (
+        <div className="alert alert-danger" role="alert">
+          <div>{this.state.message}</div>
+        </div>
+      );
     }
 
     return (
@@ -51,6 +66,7 @@ class Login extends Component {
           <div className="jumbotron col-lg-4 offset-lg-4">
             <h3 className="text-center">Login Account</h3>
             <form onSubmit={this.formSubmit}>
+              {error}
               <div className="form-group">
                 <label htmlFor="exampleInputEmail1">Email address</label>
                 <input
